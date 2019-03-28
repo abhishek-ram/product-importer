@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block title %}Product Importer - Create/Update Product{% endblock %}
+
+{% block body_content %}
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap
+    align-items-center pt-3 pb-2 mb-3 border-bottom">
+    {% if form.instance.id %}
+      <h1 class="h2">Edit product {{ form.instance.sku }}</h1>
+    {% else %}
+      <h1 class="h2">Add a new Product</h1>
+    {% endif %}
+
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <form class="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_sku">SKU</label>
+          {% if form.sku.errors %}
+            <input type="text" class="form-control is-invalid" id="id_sku" name="sku"
+                 value="{{ form.instance.sku|default_if_none:''}}">
+            <div class="invalid-feedback">{{ form.sku.errors.0 }}</div>
+          {% else %}
+            <input type="text" class="form-control" id="id_sku" name="sku"
+                 value="{{ form.instance.sku|default_if_none:''}}">
+          {% endif %}
+          <small class="form-text text-muted">A Unique identifier for this product</small>
+        </div>
+        <div class="form-group is-invalid">
+          <label for="id_name">Name</label>
+          {% if form.name.errors %}
+            <input type="text" class="form-control is-invalid" id="id_name" name="name"
+                 value="{{ form.instance.name|default_if_none:''}}">
+            <div class="invalid-feedback">{{ form.name.errors.0 }}</div>
+          {% else %}
+            <input type="text" class="form-control" id="id_name" name="name"
+                 value="{{ form.instance.name|default_if_none:''}}">
+          {% endif %}
+
+        </div>
+        <div class="form-group">
+          <label for="id_description">Description</label>
+          <textarea class="form-control" id="id_description" name="description"
+                    rows="3">{{ form.instance.description|default_if_none:''}}</textarea>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="id_is_active" name="is_active"
+              {% if form.instance.is_active %} checked {% endif %}>
+            <label class="form-check-label" for="id_is_active">
+              Active
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+  </div>
+{% endblock %}

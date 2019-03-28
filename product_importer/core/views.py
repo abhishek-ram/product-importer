@@ -1,5 +1,9 @@
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import ListView
+from django.views.generic import CreateView
+from django.views.generic import UpdateView
 
 from product_importer.core.models import Product
 
@@ -15,3 +19,22 @@ class ProductList(ListView):
     model = Product
     paginate_by = 10
 
+
+class ProductCreateView(SuccessMessageMixin, CreateView):
+    """ View for creating a product """
+    template_name = 'product_form.html'
+    model = Product
+    fields = ['sku', 'name', 'description', 'is_active']
+    success_url = reverse_lazy('product-list')
+    success_message = 'Product <strong>%(name)s</strong> has been ' \
+                      'created successfully'
+
+
+class ProductUpdateView(SuccessMessageMixin, UpdateView):
+    """ View for updating a product """
+    template_name = 'product_form.html'
+    model = Product
+    fields = ['sku', 'name', 'description', 'is_active']
+    success_url = reverse_lazy('product-list')
+    success_message = 'Product <strong>%(name)s</strong> has been ' \
+                      'edited successfully'

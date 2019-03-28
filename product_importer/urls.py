@@ -23,6 +23,10 @@ urlpatterns = [
     # Product Importer urls
     path('index/', core_views.IndexView.as_view(), name='index'),
     path('products/', core_views.ProductList.as_view(), name='product-list'),
+    path('products/create/', core_views.ProductCreateView.as_view(),
+         name='product-create'),
+    path('products/<int:pk>/edit', core_views.ProductUpdateView.as_view(),
+         name='product-update'),
 
     # Default all other urls to index view
     re_path(r'^.*', core_views.IndexView.as_view()),

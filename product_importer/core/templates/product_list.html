@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Product Importer - Dashboard{% endblock %}
+{% block title %}Product Importer - Products{% endblock %}
 
 {% block body_content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap
@@ -8,8 +8,9 @@
     <h1 class="h2">Products <small>Manage your products here</small></h1>
 
     <div class="btn-toolbar mb-2 mb-md-0">
-      <button type="button" class="btn btn-primary btn-sm">
-        <span data-feather="plus"></span> Add Product</button>
+      <a role="button" class="btn btn-primary btn-sm" href="{% url 'product-create' %}">
+        <span data-feather="plus"></span> Add Product</a>
+
     </div>
   </div>
 
@@ -23,7 +24,7 @@
       <tbody>
         {% for product in product_list %}
           <tr>
-            <td>{{ product.sku }}</td>
+            <td><a href="{% url 'product-update' product.id %}">{{ product.sku }}</a></td>
             <td>{{ product.name }}</td>
             <td>{{ product.description }}</td>
           </tr>
