@@ -104,3 +104,26 @@ body {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+
+
+/*.dm-uploader {*/
+	/*border: 0.25rem dashed #A5A5C7;*/
+/*}*/
+/*.dm-uploader.active {*/
+	/*border-color: red;*/
+
+	/*border-style: solid;*/
+/*}*/
+
+.dm-form {
+	border: solid #f7f7f9 !important;
+	padding: 1.5rem
+}
+
+.dm-form.active {
+	border-color: red !important;
+}
+
+.dm-form .progress {
+	height: 38px;
+}

@@ -17,9 +17,10 @@ def product_uploads_directory_path(instance, filename):
 class ProductUpload(models.Model):
     """ Model for managing the upload of product data """
 
-    products_file = models.FileField(upload_to=product_uploads_directory_path)
+    products_file = models.FileField(
+        upload_to=product_uploads_directory_path)
     products_count = models.IntegerField(default=0)
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(null=True, blank=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 

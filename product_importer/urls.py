@@ -27,6 +27,8 @@ urlpatterns = [
          name='product-create'),
     path('products/<int:pk>/edit', core_views.ProductUpdateView.as_view(),
          name='product-update'),
+    path('products/upload/', core_views.ProductUploadView.as_view(),
+         name='product-upload'),
 
     # Default all other urls to index view
     re_path(r'^.*', core_views.IndexView.as_view()),

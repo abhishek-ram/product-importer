@@ -4,8 +4,10 @@ from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
+from rest_framework.generics import CreateAPIView
 
 from product_importer.core.models import Product
+from product_importer.core.serializers import ProductUploadSerializer
 
 
 class IndexView(TemplateView):
@@ -38,3 +40,7 @@ class ProductUpdateView(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('product-list')
     success_message = 'Product <strong>%(name)s</strong> has been ' \
                       'edited successfully'
+
+
+class ProductUploadView(CreateAPIView):
+    serializer_class = ProductUploadSerializer
