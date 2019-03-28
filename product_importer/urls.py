@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import re_path
+from product_importer.core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Product Importer urls
+    path('index/', core_views.IndexView.as_view(), name='index'),
+
+    # Default all other urls to index view
+    re_path(r'^.*', core_views.IndexView.as_view()),
 ]
