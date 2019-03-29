@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ SECRET_KEY = '(e0o4f(y2@1-lys-=!s-h_f!g2m@&16kk#@3mo3l^2#(va+z%y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['e8426ce3.ngrok.io', 'localhost']
 
 
 # Application definition
@@ -41,12 +42,17 @@ INSTALLED_APPS = [
     'psqlextra',
     'rest_framework',
     'django_filters',
+    # 'channels',
+    'corsheaders',
+    'django_eventstream',
     'product_importer.core'
 ]
 
 MIDDLEWARE = [
+    'django_grip.GripMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -125,10 +131,22 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 # Media files i.e. files uploaded by users
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 FILE_UPLOAD_PERMISSIONS = 0o644
+
+# Define the ASGI Application
+# ASGI_APPLICATION = 'product_importer.routing.application'
+EVENTSTREAM_ALLOW_ORIGIN = '8278d577.fanoutcdn.com'
+GRIP_URL = 'http://api.fanout.io/realm/8278d577?iss=8278d577&' \
+           'key=base64:g8+MuBl5Dw5lwALoM0+HIg=='
+CORS_ORIGIN_WHITELIST = (
+    '8278d577.fanoutcdn.com',
+    'localhost:8000',
+)
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

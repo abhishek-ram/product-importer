@@ -4,3 +4,6 @@ celery[redis]==4.2.2
 psycopg2-binary==2.7.7
 django-postgres-extra==1.20
 django-filter==2.1.0
+django-cors-headers
+django-eventstream==2.5.0
+django-heroku
