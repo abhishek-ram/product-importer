@@ -147,4 +147,13 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 # Activate Django-Heroku.
-django_heroku.settings(locals(), databases=False)
+# Static files (CSS, JavaScript, Images)
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+django_heroku.settings(locals(), databases=False, staticfiles=False)
