@@ -75,10 +75,39 @@ $(document).ready(function () {
         },
         onUploadSuccess: function(id, data){
             ui_single_update_status(this, 'Importing Products ...');
+            $("#import-logs-1").toggleClass('invisible');
         },
         onFileExtError: function(file){
             ui_single_update_status(
                 this, 'File extension not allowed', 'danger');
         }
     });
+
+    const es = new ReconnectingEventSource(
+        'https://8278d577.fanoutcdn.com/import-events/');
+
+    es.addEventListener('message', function (e) {
+        const j_data = JSON.parse(e.data);
+        const current_date = new Date();
+        const datetime = current_date.getDate() + "/"
+                + (current_date.getMonth()+1)  + "/"
+                + current_date.getFullYear() + " @ "
+                + current_date.getHours() + ":"
+                + current_date.getMinutes() + ":"
+                + current_date.getSeconds();
+        $("#import-logs-2 ul").prepend(
+            "<li>"+ datetime + ": " + j_data['log'] +"</li>");
+    }, false);
+    es.addEventListener('end', function (e) {
+        location.reload()
+    }, false);
+
+    // Check for current uploads
+    if ($("#id_current_upload").attr('value')){
+        $("#import-logs-1").toggleClass('invisible');
+        const d_zone = $("#drag-and-drop-zone");
+        ui_single_update_progress(d_zone, 100);
+        ui_single_update_active(d_zone, true);
+        ui_single_update_status(d_zone, 'Importing...');
+    }
 });

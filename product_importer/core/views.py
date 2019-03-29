@@ -26,6 +26,7 @@ class IndexView(TemplateView):
             filter(is_active=True).first()
         context['last_upload'] = ProductUpload.objects.\
             filter(is_active=False).order_by('-started_at').first()
+        return context
 
 
 class ProductFilter(django_filters.FilterSet):
