@@ -148,4 +148,4 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
