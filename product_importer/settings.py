@@ -85,6 +85,7 @@ WSGI_APPLICATION = 'product_importer.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {}
 if 'DATABASE_URL' in os.environ:
+    DEBUG = False
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 else:
     DATABASES['default'] = dj_database_url.parse(
@@ -128,7 +129,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 # Media files i.e. files uploaded by users
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
