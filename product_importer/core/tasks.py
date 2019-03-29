@@ -2,6 +2,7 @@ import csv
 import logging
 import random
 import traceback
+import codecs
 from celery import shared_task
 from django.utils import timezone
 from django_eventstream import send_event
@@ -26,7 +27,7 @@ def import_products(product_upload_id):
         batch_size, total = 1000, 0
         rows, skus = [], set()
         with product_upload.products_file.open('r') as data_file:
-            data_reader = csv.DictReader(data_file)
+            data_reader = csv.DictReader(codecs.iterdecode(data_file, 'utf-8'))
 
             for row in data_reader:
                 if len(rows) <= batch_size:

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_eventstream',
     'psqlextra',
+    'storages',
     'product_importer.core'
 ]
 
@@ -149,6 +150,14 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:8000',
     'fulfil-product-importer.herokuapp.com'
 )
+
+# AWS Congig
+AWS_ACCESS_KEY_ID = 'AKIAZWJLKB6IHZY23EPF'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'ff-product-importer'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 # Activate Django-Heroku.
 django_heroku.settings(locals(), databases=False, staticfiles=False)
