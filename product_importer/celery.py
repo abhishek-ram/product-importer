@@ -5,7 +5,8 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'product_importer.settings')
 
-app = Celery('product_importer', broker='redis://localhost:6379/0')
+app = Celery('product_importer',
+             broker=os.environ.get("REDIS_URL", 'redis://localhost:6379/0'))
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
