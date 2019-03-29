@@ -139,6 +139,8 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 
 # Config for Event streams
 EVENTSTREAM_ALLOW_ORIGIN = '8278d577.fanoutcdn.com'
+GRIP_URL = 'http://api.fanout.io/realm/8278d577?iss=8278d577&' \
+           'key=base64:g8+MuBl5Dw5lwALoM0+HIg=='
 CORS_ORIGIN_WHITELIST = (
     '8278d577.fanoutcdn.com',
     'localhost:8000',
@@ -147,7 +149,6 @@ CORS_ORIGIN_WHITELIST = (
 
 # AWS Config
 AWS_STORAGE_BUCKET_NAME = 'ff-product-importer'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
