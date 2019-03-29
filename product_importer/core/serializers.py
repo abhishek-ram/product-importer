@@ -2,6 +2,7 @@ from django.core.validators import FileExtensionValidator
 from rest_framework import serializers
 
 from product_importer.core.models import ProductUpload
+from product_importer.core.models import Product
 from product_importer.core.tasks import import_products
 
 
@@ -29,3 +30,11 @@ class ProductUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductUpload
         fields = ('id', 'products_file')
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    """ Serialize the product data """
+
+    class Meta:
+        model = Product
+        fields = '__all__'

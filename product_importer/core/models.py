@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save, pre_delete
 from django.utils import timezone
 from psqlextra.models import PostgresModel
 
@@ -45,3 +46,17 @@ class EventHook(PostgresModel):
     event_type = models.CharField(max_length=100, choices=EVENT_CHOICES)
     endpoint = models.TextField()
     is_active = models.BooleanField(default=True)
+
+
+def async_trigger_event_hook(sender, instance, created, **kwargs):
+    """ Call the function for triggering web hook calls"""
+    from product_importer.core.tasks import trigger_event_hooks
+
+    if created:
+        event_type = 'product.create'
+    else:
+        event_type = 'product.update'
+    trigger_event_hooks.delay(event_type, instance.id)
+
+
+post_save.connect(async_trigger_event_hook, sender=Product)
