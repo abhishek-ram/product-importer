@@ -7,3 +7,5 @@ django-filter==2.1.0
 django-cors-headers
 django-eventstream==2.5.0
 django-heroku
+gunicorn
+
