@@ -1,9 +1,12 @@
+import django_filters
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
+from django_filters.views import FilterView
 from rest_framework.generics import CreateAPIView
 
 from product_importer.core.models import Product
@@ -15,10 +18,33 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
 
-class ProductList(ListView):
+class ProductFilter(django_filters.FilterSet):
+    query = django_filters.CharFilter(method='filter_by_query')
+    active_only = django_filters.CharFilter(method='filter_by_active')
+
+    @staticmethod
+    def filter_by_query(queryset, name, value):
+        return queryset.filter(
+            Q(name__icontains=value) | Q(sku__icontains=value) |
+            Q(description__icontains=value)
+        )
+
+    @staticmethod
+    def filter_by_active(queryset, name, value):
+        if value == 'on':
+            return queryset.filter(is_active=True)
+        return queryset
+
+    class Meta:
+        model = Product
+        fields = ['is_active']
+
+
+class ProductList(FilterView):
     """ View for listing of products """
     template_name = 'product_list.html'
     model = Product
+    filterset_class = ProductFilter
     paginate_by = 10
 
 

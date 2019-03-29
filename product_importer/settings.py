@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'psqlextra',
     'rest_framework',
+    'django_filters',
     'product_importer.core'
 ]
 
