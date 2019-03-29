@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django_grip.GripMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,8 +130,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# if DEBUG:
+#     STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 # Media files i.e. files uploaded by users
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
@@ -147,13 +150,4 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 # Activate Django-Heroku.
-# Static files (CSS, JavaScript, Images)
-
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 django_heroku.settings(locals(), databases=False, staticfiles=False)
