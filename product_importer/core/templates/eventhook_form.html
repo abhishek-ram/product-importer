@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block title %}Product Importer - Create/Update Event Hook{% endblock %}
+
+{% block body_content %}
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap
+    align-items-center pt-3 pb-2 mb-3 border-bottom">
+    {% if form.instance.id %}
+      <h1 class="h2">Edit Event Hook {{ form.instance.id }}</h1>
+    {% else %}
+      <h1 class="h2">Add a new Event Hook</h1>
+    {% endif %}
+
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <form class="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_event_type">Event Type</label>
+
+          <select class="form-control {% if form.event_type.errors %}is-invalid{% endif %}"
+                  id="id_event_type" name="event_type">
+            {% for value, text in form.event_type.field.choices %}
+              <option value="{{ value }}" {% if form.instance.event_type == value%}selected {% endif %}>
+                {{ text }}</option>
+            {% endfor %}
+          </select>
+          {% if form.event_type.errors %}
+            <div class="invalid-feedback">{{ form.event_type.errors.0 }}</div>
+          {% endif %}
+          <small class="form-text text-muted">Event which triggers the webhook</small>
+        </div>
+        <div class="form-group is-invalid">
+          <label for="id_endpoint">Endpoint</label>
+          {% if form.endpoint.errors %}
+            <input type="text" class="form-control is-invalid" id="id_endpoint" name="endpoint"
+                 value="{{ form.instance.endpoint|default_if_none:''}}">
+            <div class="invalid-feedback">{{ form.endpoint.errors.0 }}</div>
+          {% else %}
+            <input type="text" class="form-control" id="id_endpoint" name="endpoint"
+                 value="{{ form.instance.endpoint|default_if_none:''}}">
+          {% endif %}
+
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="id_is_active" name="is_active"
+              {% if form.instance.is_active %} checked {% endif %}>
+            <label class="form-check-label" for="id_is_active">
+              Active
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
+    </div>
+{#    <div class="col-sm"></div>#}
+{#    <div class="col-sm"></div>#}
+  </div>
+{% endblock %}

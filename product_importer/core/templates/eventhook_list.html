@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% load core_tags %}
+
+{% block title %}Product Importer - Event Hooks{% endblock %}
+
+{% block body_content %}
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap
+    align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Event Hooks <small class="text-muted">Manage your event hooks here</small></h1>
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <a role="button" class="btn btn-primary btn-sm" href="{% url 'eventhook-create' %}">
+        <span data-feather="plus"></span> Add Event Hook</a>
+
+    </div>
+  </div>
+
+  <div class="table-responsive mt-2">
+    <table class="table table-striped table-sm">
+      <thead>
+        <th>Event Type</th>
+        <th>Endpoint</th>
+        <th>Active</th>
+      </thead>
+      <tbody>
+        {% for eventhook in eventhook_list %}
+          <tr>
+            <td><a href="{% url 'eventhook-update' eventhook.id %}">{{ eventhook.event_type }}</a></td>
+            <td>{{ eventhook.endpoint }}</td>
+            <td>{{ eventhook.is_active }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% param_replace page=page_obj.previous_page_number%}">Previous</a></li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a></li>
+      {% endif %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?{% param_replace page=page_obj.next_page_number%}">Next</a></li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endblock %}

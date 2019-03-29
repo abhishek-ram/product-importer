@@ -22,13 +22,19 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Product Importer urls
     path('index/', core_views.IndexView.as_view(), name='index'),
-    path('products/', core_views.ProductList.as_view(), name='product-list'),
+    path('products/', core_views.ProductListView.as_view(), name='product-list'),
     path('products/create/', core_views.ProductCreateView.as_view(),
          name='product-create'),
     path('products/<int:pk>/edit', core_views.ProductUpdateView.as_view(),
          name='product-update'),
     path('products/upload/', core_views.ProductUploadView.as_view(),
          name='product-upload'),
+    path('event-hooks/', core_views.EventHookListView.as_view(),
+         name='eventhook-list'),
+    path('event-hooks/create/', core_views.EventHookCreateView.as_view(),
+         name='eventhook-create'),
+    path('event-hooks/<int:pk>/edit', core_views.EventHookUpdateView.as_view(),
+         name='eventhook-update'),
 
     # Default all other urls to index view
     re_path(r'^.*', core_views.IndexView.as_view()),

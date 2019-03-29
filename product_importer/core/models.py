@@ -34,3 +34,14 @@ class ProductUpload(PostgresModel):
         max_length=2, choices=STATUS_CHOICES, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
+
+class EventHook(PostgresModel):
+    """ Model for saving the web hooks for events """
+    EVENT_CHOICES = (
+        ('product.create', 'On Product Create'),
+        ('product.update', 'On Product Update'),
+    )
+
+    event_type = models.CharField(max_length=100, choices=EVENT_CHOICES)
+    endpoint = models.TextField()
+    is_active = models.BooleanField(default=True)
