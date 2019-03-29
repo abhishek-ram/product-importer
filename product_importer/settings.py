@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +27,7 @@ SECRET_KEY = '(e0o4f(y2@1-lys-=!s-h_f!g2m@&16kk#@3mo3l^2#(va+z%y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['e8426ce3.ngrok.io', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,17 +83,13 @@ WSGI_APPLICATION = 'product_importer.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'psqlextra.backend',
-        'NAME': 'product_importer',
-        'USER': 'master',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+DATABASES = {}
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+else:
+    DATABASES['default'] = dj_database_url.parse(
+        'postgresql://master:password@localhost:5432/product_importer')
+DATABASES['default']['ENGINE'] = 'psqlextra.backend'
 
 
 # Password validation

@@ -10,6 +10,9 @@ class Product(PostgresModel):
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ['id']
+
 
 def product_uploads_directory_path(instance, filename):
     return f'product_data/{timezone.now().strftime("%Y/%m/%d")}/' \
@@ -46,6 +49,9 @@ class EventHook(PostgresModel):
     event_type = models.CharField(max_length=100, choices=EVENT_CHOICES)
     endpoint = models.TextField()
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['id']
 
 
 def async_trigger_event_hook(sender, instance, created, **kwargs):
