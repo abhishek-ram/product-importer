@@ -10,3 +10,4 @@ django-heroku
 gunicorn
 boto3
 django-storages
+python-dotenv==0.10.1

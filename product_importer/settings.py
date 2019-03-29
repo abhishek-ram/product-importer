@@ -132,28 +132,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# if DEBUG:
-#     STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 # Media files i.e. files uploaded by users
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 FILE_UPLOAD_PERMISSIONS = 0o644
 
-# Define the ASGI Application
-# ASGI_APPLICATION = 'product_importer.routing.application'
+# Config for Event streams
 EVENTSTREAM_ALLOW_ORIGIN = '8278d577.fanoutcdn.com'
-GRIP_URL = 'http://api.fanout.io/realm/8278d577?iss=8278d577&' \
-           'key=base64:g8+MuBl5Dw5lwALoM0+HIg=='
 CORS_ORIGIN_WHITELIST = (
     '8278d577.fanoutcdn.com',
     'localhost:8000',
     'fulfil-product-importer.herokuapp.com'
 )
 
-# AWS Congig
-AWS_ACCESS_KEY_ID = 'AKIAZWJLKB6IHZY23EPF'
-AWS_SECRET_ACCESS_KEY = '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'
+# AWS Config
 AWS_STORAGE_BUCKET_NAME = 'ff-product-importer'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
