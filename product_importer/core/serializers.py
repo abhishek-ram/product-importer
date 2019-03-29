@@ -2,6 +2,7 @@ from django.core.validators import FileExtensionValidator
 from rest_framework import serializers
 
 from product_importer.core.models import ProductUpload
+from product_importer.core.tasks import import_products
 
 
 class ProductUploadSerializer(serializers.ModelSerializer):
@@ -18,7 +19,12 @@ class ProductUploadSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        return super().create(validated_data)
+        """ Override create to start async product import"""
+        obj = super().create(validated_data)
+        result = import_products.delay(obj.id)
+        obj.task_id = result.task_id
+        obj.save()
+        return obj
 
     class Meta:
         model = ProductUpload
