@@ -11,12 +11,21 @@ from rest_framework.generics import CreateAPIView
 
 from product_importer.core.models import EventHook
 from product_importer.core.models import Product
+from product_importer.core.models import ProductUpload
 from product_importer.core.serializers import ProductUploadSerializer
 
 
 class IndexView(TemplateView):
     """ View for the default index page"""
     template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        """ Update the context for this page"""
+        context = super().get_context_data(**kwargs)
+        context['current_upload'] = ProductUpload.objects.\
+            filter(is_active=True).first()
+        context['last_upload'] = ProductUpload.objects.\
+            filter(is_active=False).order_by('-started_at').first()
 
 
 class ProductFilter(django_filters.FilterSet):

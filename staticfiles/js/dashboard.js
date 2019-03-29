@@ -1,36 +1,36 @@
 function ui_single_update_active(element, active)
 {
-  element.find('div.progress').toggleClass('d-none', !active);
-  element.find('input[type="text"]').toggleClass('d-none', active);
+      element.find('div.progress').toggleClass('d-none', !active);
+      element.find('input[type="text"]').toggleClass('d-none', active);
 
-  element.find('input[type="file"]').prop('disabled', active);
-  element.find('.btn').toggleClass('disabled', active);
+      element.find('input[type="file"]').prop('disabled', active);
+      element.find('.btn').toggleClass('disabled', active);
 
-  element.find('.btn i').toggleClass('fa-circle-o-notch fa-spin', active);
-  element.find('.btn i').toggleClass('fa-folder-o', !active);
+      element.find('.btn span').toggleClass('spinner-border spinner-border-sm', active);
+      // element.find('.btn i').toggleClass('fa-folder-o', !active);
 }
 
 function ui_single_update_progress(element, percent, active)
 {
-  active = (typeof active === 'undefined' ? true : active);
+    active = (typeof active === 'undefined' ? true : active);
 
-  var bar = element.find('div.progress-bar');
+    var bar = element.find('div.progress-bar');
 
-  bar.width(percent + '%').attr('aria-valuenow', percent);
-  bar.toggleClass('progress-bar-striped progress-bar-animated', active);
+    bar.width(percent + '%').attr('aria-valuenow', percent);
+    bar.toggleClass('progress-bar-striped progress-bar-animated', active);
 
-  if (percent === 0){
-    bar.html('');
-  } else {
-    bar.html(percent + '%');
-  }
+    if (percent === 0){
+        bar.html('');
+    } else {
+        bar.html(percent + '%');
+    }
 }
 
 function ui_single_update_status(element, message, color)
 {
-  color = (typeof color === 'undefined' ? 'muted' : color);
+    color = (typeof color === 'undefined' ? 'muted' : color);
 
-  element.find('small.status').prop('class','status text-' + color).html(message);
+    element.find('small.status').prop('class','status text-' + color).html(message);
 }
 
 $(document).ready(function () {
@@ -74,7 +74,7 @@ $(document).ready(function () {
                 this, 'Error: ' + message, 'danger');
         },
         onUploadSuccess: function(id, data){
-            location.reload();
+            ui_single_update_status(this, 'Importing Products ...');
         },
         onFileExtError: function(file){
             ui_single_update_status(

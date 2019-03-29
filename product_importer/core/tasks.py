@@ -2,6 +2,7 @@ import csv
 import logging
 import random
 import traceback
+import time
 from celery import shared_task
 from django.utils import timezone
 from psqlextra.query import ConflictAction
@@ -25,6 +26,7 @@ def import_products(product_upload_id):
             data_reader = csv.DictReader(data_file)
 
             for row in data_reader:
+                time.sleep(5)
                 if len(rows) <= batch_size:
                     if row['sku'] not in skus:
                         row['is_active'] = random.getrandbits(1)
