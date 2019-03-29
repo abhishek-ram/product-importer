@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+from dotenv import load_dotenv, find_dotenv
 
 if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'product_importer.settings')
@@ -13,3 +14,5 @@ if __name__ == '__main__':
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+    load_dotenv(find_dotenv())
+
