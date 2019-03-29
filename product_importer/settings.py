@@ -39,12 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'psqlextra',
     'rest_framework',
     'django_filters',
-    # 'channels',
     'corsheaders',
     'django_eventstream',
+    'psqlextra',
     'product_importer.core'
 ]
 
