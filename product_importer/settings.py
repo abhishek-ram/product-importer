@@ -131,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # if DEBUG:
 #     STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
@@ -147,6 +147,7 @@ GRIP_URL = 'http://api.fanout.io/realm/8278d577?iss=8278d577&' \
 CORS_ORIGIN_WHITELIST = (
     '8278d577.fanoutcdn.com',
     'localhost:8000',
+    'fulfil-product-importer.herokuapp.com'
 )
 
 # Activate Django-Heroku.
