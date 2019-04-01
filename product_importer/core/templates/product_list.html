@@ -60,7 +60,11 @@
     </table>
   </div>
 
-  <nav aria-label="Page navigation example">
+  <div class="clearfix">
+
+
+
+  <nav aria-label="Paginate Products" class="d-flex">
     <ul class="pagination">
       {% if page_obj.has_previous %}
         <li class="page-item">
@@ -77,5 +81,8 @@
           <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a></li>
       {% endif %}
     </ul>
+  <span class="mt-2 ml-2 text-info"> {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} Products</span>
   </nav>
+
+   </div>
 {% endblock %}
