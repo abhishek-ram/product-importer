@@ -16,8 +16,9 @@
   </div>
 
   <input type="hidden" id="id_current_upload" value="{{ current_upload.id }}">
-  <form class="col-md-6  dm-uploader dm-form" id="drag-and-drop-zone">
-
+  <form class="col-md-6  dm-uploader dm-form" id="drag-and-drop-zone"
+        action="{% url 'product-upload' %}" method="post">
+    <input type="hidden" name="products_file" id ="id_products_file">
     {% if last_upload %}
       <p class="text-right small text-info">
         <span data-feather="download"></span>
@@ -28,7 +29,6 @@
         <div class="from-group mb-2">
           <label>Upload Product CSV</label>
           <input type="text" class="form-control" aria-describedby="fileHelp"
-                 name="products_file" id ="id_products_file"
                  placeholder="No file uploaded..." readonly="readonly" />
 
           <div class="progress mb-2 d-none">
@@ -65,7 +65,7 @@
 {% endblock %}
 
 {% block body_js %}
-  <script src="{% static "js/jquery.dm-uploader.min.js" %}"></script>
+  <script src="{% static "js/jquery.dm-uploader.js" %}"></script>
   <script src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
   <script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
   <script src="{% static "js/dashboard.js" %}"></script>

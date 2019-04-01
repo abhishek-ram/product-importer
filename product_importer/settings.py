@@ -144,13 +144,13 @@ GRIP_URL = 'http://api.fanout.io/realm/8278d577?iss=8278d577&' \
 CORS_ORIGIN_WHITELIST = (
     '8278d577.fanoutcdn.com',
     'localhost:8000',
-    'fulfil-product-importer.herokuapp.com'
+    'fulfil-product-importer.herokuapp.com',
 )
 
 # AWS Config
 AWS_STORAGE_BUCKET_NAME = 'ff-product-importer'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
+AWS_DEFAULT_ACL = None
 
 # Activate Django-Heroku.
 django_heroku.settings(locals(), databases=False, staticfiles=False)

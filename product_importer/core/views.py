@@ -1,5 +1,8 @@
+import boto3
 import django_filters
+from botocore.client import Config
 from django.contrib.messages.views import SuccessMessageMixin
+from django.conf import settings
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -8,6 +11,8 @@ from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django_filters.views import FilterView
 from rest_framework.generics import CreateAPIView
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
 
 from product_importer.core.models import EventHook
 from product_importer.core.models import Product
@@ -81,6 +86,7 @@ class ProductUpdateView(SuccessMessageMixin, UpdateView):
 
 class ProductUploadView(CreateAPIView):
     serializer_class = ProductUploadSerializer
+    success_url = reverse_lazy('index')
 
 
 class EventHookListView(ListView):
@@ -107,3 +113,27 @@ class EventHookUpdateView(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('eventhook-list')
     success_message = 'Event Hook has been edited successfully'
 
+
+class UploadsSignS3View(GenericAPIView):
+    """ View for signing of s3 upload requests from frontend """
+
+    def get(self, request):
+        s3 = boto3.client('s3', region_name='ap-south-1',
+                          config=Config(signature_version='s3v4'))
+        signed_post = s3.generate_presigned_post(
+            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+            Key='product_data/' + request.GET['file_name'],
+            Fields={"acl": "public-read",
+                    "Content-Type": request.GET['file_type']},
+            Conditions=[
+                {"acl": "public-read"},
+                {"Content-Type": request.GET['file_type']}
+            ],
+            ExpiresIn=3600
+        )
+        return Response(
+            {'data': signed_post,
+             'url': f'https://{settings.AWS_STORAGE_BUCKET_NAME}.'
+                    f's3.amazonaws.com/{request.GET["file_name"]}'
+             }
+        )
