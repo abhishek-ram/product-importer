@@ -26,8 +26,7 @@ class ProductUpload(PostgresModel):
         ('F', 'Failed'),
     )
 
-    products_file = models.FileField(
-        upload_to=product_uploads_directory_path)
+    products_file = models.CharField(max_length=250)
     products_count = models.IntegerField(default=0)
 
     task_id = models.CharField(max_length=100, null=True, blank=True)

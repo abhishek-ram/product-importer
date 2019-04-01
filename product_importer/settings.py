@@ -150,7 +150,7 @@ CORS_ORIGIN_WHITELIST = (
 # AWS Config
 AWS_STORAGE_BUCKET_NAME = 'ff-product-importer'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
+AWS_DEFAULT_ACL = None
 
 # Activate Django-Heroku.
 django_heroku.settings(locals(), databases=False, staticfiles=False)

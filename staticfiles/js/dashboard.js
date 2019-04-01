@@ -33,15 +33,18 @@ function ui_single_update_status(element, message, color)
     element.find('small.status').prop('class','status text-' + color).html(message);
 }
 
-$(document).ready(function () {
-    $("#drag-and-drop-zone").dmUploader({
-        multiple: false,
-        url: '/products/upload/',
-        fieldName: 'products_file',
+const ID = function () {
+      // Math.random should be unique because of its seeding algorithm.
+      // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+      // after the decimal.
+      return '_' + Math.random().toString(36).substr(2, 9);
+};
 
-        onInit: function(){
-            console.log('Callback: Plugin initialized');
-        },
+$(document).ready(function () {
+    const upload_form = $("#drag-and-drop-zone");
+    upload_form.dmUploader({
+        multiple: false,
+        extFilter: ['csv'],
         onDragEnter: function(){
           // Happens when dragging something over the DnD area
           this.addClass('active');
@@ -49,6 +52,26 @@ $(document).ready(function () {
         onDragLeave: function(){
             // Happens when dragging something OUT of the DnD area
             this.removeClass('active');
+        },
+        onNewFile: function(id, file) {
+            const that = $(this).data('dmUploader');
+
+            const file_name = ID() + '.csv';
+            $.ajax({
+                type: "GET",
+                url: "/uploads/sign-s3/?file_name=" + file_name + "&file_type=" + file.type,
+                async: false,
+                success: function(data) {
+                    $('#id_products_file').attr(
+                        'value', data.data.url + data.data.fields.key);
+                    that.settings.url = data.data.url;
+                    that.settings.extraData = data.data.fields;
+                },
+                error: function (request) {
+                    console.log(request);
+                }
+            });
+
         },
         onBeforeUpload: function(id){
             // about tho start uploading a file
@@ -63,6 +86,7 @@ $(document).ready(function () {
         onUploadError: function(id, xhr, status, message){
             // Happens when an upload error happens
             ui_single_update_active(this, false);
+
             if (xhr.responseJSON){
                 if (xhr.responseJSON.products_file) {
                     message = xhr.responseJSON.products_file[0];
@@ -74,6 +98,14 @@ $(document).ready(function () {
                 this, 'Error: ' + message, 'danger');
         },
         onUploadSuccess: function(id, data){
+            $.ajax({
+                type: "POST",
+                url: upload_form.prop('action'),
+                data: upload_form.serialize(),
+                error: function (request) {
+                    console.log(request);
+                }
+            });
             ui_single_update_status(this, 'Importing Products ...');
             $("#import-logs-1").toggleClass('invisible');
         },

@@ -43,6 +43,9 @@ urlpatterns = [
     path('import-events/', include(django_eventstream.urls),
          {'channels': ['product-import']}),
 
+    path('uploads/sign-s3/', core_views.UploadsSignS3View.as_view(),
+         name='uploads-sign-s3'),
+
     # Default all other urls to index view
     re_path(r'^.*', core_views.IndexView.as_view()),
 ]

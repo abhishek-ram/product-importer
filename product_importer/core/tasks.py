@@ -1,7 +1,9 @@
 import csv
 import logging
 import random
+import requests
 import traceback
+import codecs
 from celery import shared_task
 from django.utils import timezone
 from django_eventstream import send_event
@@ -25,29 +27,30 @@ def import_products(product_upload_id):
 
         batch_size, total = 1000, 0
         rows, skus = [], set()
-        with product_upload.products_file.open('r') as data_file:
-            data_reader = csv.DictReader(data_file)
+        # with product_upload.products_file.open('r') as data_file:
+        data_file = requests.get(product_upload.products_file, stream=True)
+        data_reader = csv.DictReader(data_file.iter_lines(decode_unicode=True))
 
-            for row in data_reader:
-                if len(rows) <= batch_size:
-                    if row['sku'] not in skus:
-                        row['is_active'] = random.getrandbits(1)
-                        skus.add(row['sku'])
-                        rows.append(row)
-                else:
-                    total += batch_size
-                    Product.objects \
-                        .on_conflict(['sku'], ConflictAction.UPDATE) \
-                        .bulk_insert(rows)
-                    rows = []
-                    send_event(
-                        'product-import', 'message',
-                        {'log': f'Imported {total} product to the DB'})
-            if rows:
-                total += len(rows)
+        for row in data_reader:
+            if len(rows) <= batch_size:
+                if row['sku'] not in skus:
+                    row['is_active'] = random.getrandbits(1)
+                    skus.add(row['sku'])
+                    rows.append(row)
+            else:
+                total += batch_size
                 Product.objects \
                     .on_conflict(['sku'], ConflictAction.UPDATE) \
                     .bulk_insert(rows)
+                rows = []
+                send_event(
+                    'product-import', 'message',
+                    {'log': f'Imported {total} product to the DB'})
+        if rows:
+            total += len(rows)
+            Product.objects \
+                .on_conflict(['sku'], ConflictAction.UPDATE) \
+                .bulk_insert(rows)
         send_event(
             'product-import', 'message',
             {'log': f'Product Import for upload {product_upload_id} completed, '
